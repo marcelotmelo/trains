@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+}
+
+group 'ca.receptiviti'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+lombok {
+    version = '1.18.4'
+    sha256 = ""
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    testImplementation 'org.hamcrest:hamcrest:2.1'
+}
