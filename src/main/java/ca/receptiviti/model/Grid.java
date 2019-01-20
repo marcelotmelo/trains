@@ -39,32 +39,17 @@ public class Grid {
      * @param city The city from which the paths will be returned.
      * @return The existing paths from the city.
      */
-    public Map<City, Integer> routesFromCity(City city) {
+    public Map<City, Integer> neighbours(City city) {
         return new HashMap<>(cities.get(city));
     }
 
     /**
-     * Returns the list of all existing cities in the grid.
+     * Returns a unique list of all existing cities in the grid.
      *
      * @return The list of existing cities.
      */
     public Set<City> getCities() {
         return new HashSet<>(cities.keySet());
-    }
-
-    /**
-     * Returns all the cities directly accessible from a given city.
-     *
-     * @param city The source city.
-     * @return A list of cities accessible from the origin.
-     */
-    public Set<City> getNeighbours(City city) {
-        Set<City> neighbours = new HashSet<>();
-        Map<City, Integer> routes = routesFromCity(city);
-        if (routes != null) {
-            neighbours.addAll(routes.keySet());
-        }
-        return neighbours;
     }
 
     /**
@@ -75,8 +60,8 @@ public class Grid {
      * @return The distance.
      * @throws RouteNotFoundException If cities are not directly connected or do not exist.
      */
-    public int getDistance(City source, City destination) throws RouteNotFoundException {
-        Map<City, Integer> routes = routesFromCity(source);
+    public int distance(City source, City destination) throws RouteNotFoundException {
+        Map<City, Integer> routes = neighbours(source);
         Integer distance = routes.get(destination);
         if (distance == null) {
             throw new RouteNotFoundException();

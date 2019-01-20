@@ -1,7 +1,7 @@
 package ca.receptiviti.builder;
 
-import ca.receptiviti.Kiwiland;
 import ca.receptiviti.model.City;
+import ca.receptiviti.model.Constants;
 import ca.receptiviti.model.Grid;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,43 +21,43 @@ public class GridBuilderTest {
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
+    City a = new City("A");
+    City b = new City("B");
+    City c = new City("C");
+    City d = new City("D");
+    City e = new City("E");
+
     @Test
     public void buildFromPaths() {
-        City A = new City("A");
-        City B = new City("B");
-        City C = new City("C");
-        City D = new City("D");
-        City E = new City("E");
-
-        Grid grid = GridBuilder.buildFromPaths(Kiwiland.PATHS);
+        Grid grid = GridBuilder.buildFromPaths(Constants.PATHS);
         collector.checkThat(grid, notNullValue());
         Set<City> cities = grid.getCities();
         collector.checkThat(cities.size(), is(5));
-        collector.checkThat(cities.contains(A), is(true));
-        collector.checkThat(cities.contains(B), is(true));
-        collector.checkThat(cities.contains(C), is(true));
-        collector.checkThat(cities.contains(D), is(true));
-        collector.checkThat(cities.contains(E), is(true));
+        collector.checkThat(cities.contains(a), is(true));
+        collector.checkThat(cities.contains(b), is(true));
+        collector.checkThat(cities.contains(c), is(true));
+        collector.checkThat(cities.contains(d), is(true));
+        collector.checkThat(cities.contains(e), is(true));
 
         Map<City, Integer> fromA = new HashMap<>();
-        fromA.put(B, 5);
-        fromA.put(D, 5);
-        fromA.put(E, 7);
+        fromA.put(b, 5);
+        fromA.put(d, 5);
+        fromA.put(e, 7);
 
-        Map<City, Integer> routesFromA = grid.routesFromCity(A);
+        Map<City, Integer> routesFromA = grid.neighbours(a);
         collector.checkThat(routesFromA, equalTo(fromA));
 
         Map<City, Integer> fromC = new HashMap<>();
-        fromC.put(D, 8);
-        fromC.put(E, 2);
-        Map<City, Integer> routesFromC = grid.routesFromCity(C);
+        fromC.put(d, 8);
+        fromC.put(e, 2);
+        Map<City, Integer> routesFromC = grid.neighbours(c);
 
         collector.checkThat(routesFromC, equalTo(fromC));
         routesFromC.forEach(
                 (k, v) -> {
-                    if (k.equals(D)) {
+                    if (k.equals(d)) {
                         collector.checkThat(v, is(8));
-                    } else if (k.equals(E)) {
+                    } else if (k.equals(e)) {
                         collector.checkThat(v, is(2));
                     } else {
                         throw new IllegalStateException("Wrong Path present");

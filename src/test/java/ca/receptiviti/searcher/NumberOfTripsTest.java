@@ -1,8 +1,8 @@
 package ca.receptiviti.searcher;
 
-import ca.receptiviti.Kiwiland;
 import ca.receptiviti.builder.GridBuilder;
 import ca.receptiviti.model.City;
+import ca.receptiviti.model.Constants;
 import ca.receptiviti.model.Grid;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +16,12 @@ public class NumberOfTripsTest {
 
     @Before
     public void setup() {
-        Grid grid = GridBuilder.buildFromPaths(Kiwiland.PATHS);
+        Grid grid = GridBuilder.buildFromPaths(Constants.PATHS);
         numberOfTrips = new NumberOfTrips(grid);
     }
 
     @Test
-    public void givenCtoCgetMaxStops() {
+    public void givenCtoCgetMaxStops() throws Exception {
         City c = new City("C");
         int stops = 3;
         int tripsToBeFound = 2;
@@ -31,7 +31,7 @@ public class NumberOfTripsTest {
     }
 
     @Test
-    public void givenAtoCgetMaxStops() {
+    public void givenAtoCgetMaxStops() throws Exception {
         City a = new City("A");
         City c = new City("C");
         int stops = 4;

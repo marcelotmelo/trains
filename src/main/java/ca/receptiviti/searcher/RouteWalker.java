@@ -1,14 +1,17 @@
 package ca.receptiviti.searcher;
 
+import ca.receptiviti.exception.RouteNotFoundException;
 import ca.receptiviti.model.City;
 import ca.receptiviti.model.Grid;
 import ca.receptiviti.model.Route;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-public class RouteWalker {
+/**
+ * The class defines a method to traverse and build a list of routes @see ca.receptiviti.model.Route possible within a grid @see ca.receptiviti.model.Grid.
+ */
+class RouteWalker {
 
     private final Grid grid;
 
@@ -19,17 +22,21 @@ public class RouteWalker {
         this.strategy = strategy;
     }
 
-    public Grid getGrid() {
-        return grid;
-    }
-
-    public Set<Map.Entry<City, Integer>> routes(City city) {
-        return grid.routesFromCity(city).entrySet();
-    }
-
-    public void walk(City destination, Route route, List<Route> routes, boolean canCycle, int limit, Boolean definedLimit) {
-        City city = route.last();
-        for (Map.Entry<City, Integer> entry : grid.routesFromCity(city).entrySet()) {
+    /**
+     * Traverses one city down from the last city of the existing travel path, until it reaches the destination or the
+     * threshold limits are reached.
+     *
+     * @param destination  The destination city.
+     * @param route        The path traveled so far.
+     * @param routes       The list of existing paths.
+     * @param canCycle     Whether a path can be cyclic or not.
+     * @param limit        The numeric threshold to be observed.
+     * @param definedLimit A boolean expression that indicates if the threshold was reached, based on the LimitStrategy.
+     * @throws RouteNotFoundException If a path can not be found to destination within the given limit.
+     */
+    public void walk(City destination, Route route, List<Route> routes, boolean canCycle, int limit, Boolean definedLimit) throws RouteNotFoundException {
+        City city = route.last().orElseThrow(RouteNotFoundException::new);
+        for (Map.Entry<City, Integer> entry : grid.neighbours(city).entrySet()) {
             City neighbour = entry.getKey();
             Integer distance = entry.getValue();
             if (destination.equals(neighbour)) {
@@ -44,26 +51,41 @@ public class RouteWalker {
         }
     }
 
+    /**
+     * Creates a new RouteWalkerBuilder.
+     *
+     * @return a RouteWalkerBuilder.
+     */
     public static RouteWalkerBuilder builder() {
         return new RouteWalkerBuilder();
     }
 
+    /**
+     * Builder class of RouteWalker.
+     */
     static class RouteWalkerBuilder {
 
-        private final StopLimitStrategy stopLimitStrategy = new StopLimitStrategy();
-
-        private final LengthLimitStrategy lengthLimitStrategy = new LengthLimitStrategy();
-
         private RouteWalkerBuilder() {
-
         }
 
+        /**
+         * Creates a new RouteWalker with a StopLimitStrategy.
+         *
+         * @param grid The pre-defined grid that will be traversed by the walker.
+         * @return A new RouteWalker with a StopLimitStrategy.
+         */
         public RouteWalker withStopLimit(Grid grid) {
-            return new RouteWalker(grid, stopLimitStrategy);
+            return new RouteWalker(grid, new StopLimitStrategy());
         }
 
+        /**
+         * Creates a new RouteWalker with a LengthLimitStrategy.
+         *
+         * @param grid The pre-defined grid that will be traversed by the walker.
+         * @return A new RouteWalker with a LengthLimitStrategy.
+         */
         public RouteWalker withLengthLimit(Grid grid) {
-            return new RouteWalker(grid, lengthLimitStrategy);
+            return new RouteWalker(grid, new LengthLimitStrategy());
         }
 
     }

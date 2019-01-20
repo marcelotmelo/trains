@@ -4,7 +4,10 @@ import ca.receptiviti.model.Route;
 
 import java.util.function.BiFunction;
 
-public class StopLimitStrategy implements LimitStrategy {
+/**
+ * A strategy that defines the limit based on the {@see ca.receptiviti.model.Route#stops()}.
+ */
+class StopLimitStrategy implements LimitStrategy {
 
     @Override
     public BiFunction<Route, Integer, Boolean> limit() {

@@ -1,8 +1,8 @@
 package ca.receptiviti.searcher;
 
-import ca.receptiviti.Kiwiland;
 import ca.receptiviti.builder.GridBuilder;
 import ca.receptiviti.model.City;
+import ca.receptiviti.model.Constants;
 import ca.receptiviti.model.Grid;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,12 +16,12 @@ public class RouteLengthTest {
 
     @Before
     public void setup() {
-        Grid grid = GridBuilder.buildFromPaths(Kiwiland.PATHS);
+        Grid grid = GridBuilder.buildFromPaths(Constants.PATHS);
         routeLength = new RouteLength(grid);
     }
 
     @Test
-    public void givenSourceADestinationCShortestExpect9() throws Exception {
+    public void givenSourceADestinationCShortest() throws Exception {
         City a = new City("A");
         City c = new City("C");
         int expected = 9;
@@ -29,14 +29,14 @@ public class RouteLengthTest {
     }
 
     @Test
-    public void givenSourceBDestinationBShortestExpect9() throws Exception {
+    public void givenSourceBDestinationBShortest() throws Exception {
         City b = new City("B");
         int expected = 9;
         assertShortest(expected, b, b);
     }
 
     @Test
-    public void givenSourceCDestinationCMaxLengthExpect7() {
+    public void givenSourceCDestinationCMaxLength() throws Exception {
         City c = new City("C");
         int expected = 7;
 
