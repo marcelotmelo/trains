@@ -1,6 +1,6 @@
 # Code challenge
 
-The code in this repository aims to solve the problem stated in PROBLEM.md.
+The code in this repository aims to solve the problem stated in [PROBLEM.md](https://raw.githubusercontent.com/marcelotmelo/trains/master/src/main/resources/PROBLEM.md).
 Its outputs and expectations are defined in said file.
 
 ## Running the application
