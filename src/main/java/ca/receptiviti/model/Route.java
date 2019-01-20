@@ -7,7 +7,7 @@ public class Route implements HasLength, HasStops {
 
     private int distance;
 
-    private Deque<City> cities;
+    private final Deque<City> cities;
 
     public Route(City source) {
         cities = new LinkedList<>();
@@ -19,10 +19,9 @@ public class Route implements HasLength, HasStops {
         this.distance = distance;
     }
 
-    public Route addCity(City city, int distance) {
+    private void addCity(City city, int distance) {
         cities.add(city);
         this.distance += distance;
-        return this;
     }
 
     public City last() {
@@ -43,19 +42,17 @@ public class Route implements HasLength, HasStops {
         return cities.isEmpty() ? 0 : cities.size() - 1;
     }
 
-
-
     public static RouterBuilder builder() {
         return new RouterBuilder();
     }
 
     public static class RouterBuilder {
 
-        Deque<City> cities = new LinkedList<>();
+        final Deque<City> cities = new LinkedList<>();
 
         int distance = 0;
 
-        public RouterBuilder wihtRoute(Route route) {
+        public RouterBuilder withRoute(Route route) {
             this.cities.addAll(route.cities);
             this.distance = route.distance;
             return this;

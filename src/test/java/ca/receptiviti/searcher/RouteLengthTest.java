@@ -21,7 +21,7 @@ public class RouteLengthTest {
     }
 
     @Test
-    public void givenSourceADestinationCShortestExpect9() {
+    public void givenSourceADestinationCShortestExpect9() throws Exception {
         City a = new City("A");
         City c = new City("C");
         int expected = 9;
@@ -29,7 +29,7 @@ public class RouteLengthTest {
     }
 
     @Test
-    public void givenSourceBDestinationBShortestExpect9() {
+    public void givenSourceBDestinationBShortestExpect9() throws Exception {
         City b = new City("B");
         int expected = 9;
         assertShortest(expected, b, b);
@@ -44,10 +44,9 @@ public class RouteLengthTest {
         assertThat(trips, equalTo(expected));
     }
 
-    private void assertShortest(int expected, City source, City destination) {
+    private void assertShortest(int expected, City source, City destination) throws Exception {
         int length = routeLength.shortest(source, destination);
         assertThat(length, equalTo(expected));
-
     }
 
 }

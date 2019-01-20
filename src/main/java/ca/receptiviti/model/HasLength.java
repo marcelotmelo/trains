@@ -1,8 +1,8 @@
 package ca.receptiviti.model;
 
 @FunctionalInterface
-public interface HasLength {
+interface HasLength {
 
-    public int length();
+    int length();
 
 }
