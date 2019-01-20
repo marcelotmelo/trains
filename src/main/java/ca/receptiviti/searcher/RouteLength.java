@@ -46,7 +46,7 @@ public class RouteLength extends AbstractTripCalculator {
      */
     public int tripsWithMaxLength(City source, City destination, int maxLength) throws RouteNotFoundException {
         List<Route> routes = walk(source, destination, true, maxLength);
-        return (int) routes.stream().filter(r -> r.length() < 30).count();
+        return (int) routes.stream().filter(r -> r.length() < maxLength).count();
     }
 
 }

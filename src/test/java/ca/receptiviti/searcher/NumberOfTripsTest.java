@@ -21,7 +21,7 @@ public class NumberOfTripsTest {
     }
 
     @Test
-    public void givenCtoCgetMaxStops() throws Exception {
+    public void givenCtoCMaxStops() throws Exception {
         City c = new City(Constants.C);
         int stops = 3;
         int tripsToBeFound = 2;
@@ -31,7 +31,7 @@ public class NumberOfTripsTest {
     }
 
     @Test
-    public void givenAtoCgetMaxStops() throws Exception {
+    public void givenAtoCMaxStops() throws Exception {
         City a = new City(Constants.A);
         City c = new City(Constants.C);
         int stops = 4;
@@ -42,11 +42,22 @@ public class NumberOfTripsTest {
     }
 
     @Test
-    public void givenAtoDgetMaxStops() throws Exception {
+    public void givenAtoDMaxStopsHigh() throws Exception {
         City a = new City(Constants.A);
         City d = new City("D");
         int stops = 7;
         int tripsToBeFound = 6;
+
+        int trips = numberOfTrips.exactStops(a, d, stops);
+        assertThat(trips, equalTo(tripsToBeFound));
+    }
+
+    @Test
+    public void givenAtoDMaxStopsLow() throws Exception {
+        City a = new City(Constants.A);
+        City d = new City("D");
+        int stops = 3;
+        int tripsToBeFound = 2;
 
         int trips = numberOfTrips.exactStops(a, d, stops);
         assertThat(trips, equalTo(tripsToBeFound));

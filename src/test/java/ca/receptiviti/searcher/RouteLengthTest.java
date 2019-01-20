@@ -29,6 +29,16 @@ public class RouteLengthTest {
     }
 
     @Test
+    public void givenSourceADestinationEShortest() throws Exception {
+        City a = new City(Constants.A);
+        City e = new City("E");
+        int expected = 7;
+
+        assertShortest(expected, a, e);
+    }
+
+
+    @Test
     public void givenSourceBDestinationBShortest() throws Exception {
         City b = new City(Constants.B);
         int expected = 9;
@@ -41,6 +51,27 @@ public class RouteLengthTest {
         int expected = 7;
 
         int trips = routeLength.tripsWithMaxLength(c, c, 30);
+        assertThat(trips, equalTo(expected));
+    }
+
+    @Test
+    public void givenSourceADestinationDMaxLength() throws Exception {
+        City a = new City(Constants.A);
+        City d = new City("D");
+        int expected = 2;
+
+        int trips = routeLength.tripsWithMaxLength(a, d, 20);
+        assertThat(trips, equalTo(expected));
+    }
+
+
+    @Test
+    public void givenSourceADestinationEMaxLength() throws Exception {
+        City a = new City(Constants.A);
+        City e = new City("E");
+        int expected = 9;
+
+        int trips = routeLength.tripsWithMaxLength(a, e, 25);
         assertThat(trips, equalTo(expected));
     }
 
