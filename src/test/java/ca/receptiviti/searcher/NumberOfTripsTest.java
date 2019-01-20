@@ -22,22 +22,22 @@ public class NumberOfTripsTest {
 
     @Test
     public void givenCtoCgetMaxStops() {
-        City C = new City("C");
-        long stops = 3;
-        long tripsToBeFound = 2;
+        City c = new City("C");
+        int stops = 3;
+        int tripsToBeFound = 2;
 
-        long trips = numberOfTrips.maxStops(C, C, stops);
+        int trips = numberOfTrips.maxStops(c, c, stops);
         assertThat(trips, equalTo(tripsToBeFound));
     }
 
     @Test
     public void givenAtoCgetMaxStops() {
-        City A = new City("A");
-        City C = new City("C");
-        long stops = 4;
-        long tripsToBeFound = 1;
+        City a = new City("A");
+        City c = new City("C");
+        int stops = 4;
+        int tripsToBeFound = 3;
 
-        long trips = numberOfTrips.exactStops(A, C, stops);
+        int trips = numberOfTrips.exactStops(a, c, stops);
         assertThat(trips, equalTo(tripsToBeFound));
     }
 }

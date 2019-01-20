@@ -46,7 +46,7 @@ public class Grid {
      *
      * @return The list of existing cities.
      */
-    public Set<City> getAllCities() {
+    public Set<City> getCities() {
         return new HashSet<>(cities.keySet());
     }
 

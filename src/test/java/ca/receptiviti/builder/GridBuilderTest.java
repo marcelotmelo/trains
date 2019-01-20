@@ -31,7 +31,7 @@ public class GridBuilderTest {
 
         Grid grid = GridBuilder.buildFromPaths(Kiwiland.PATHS);
         collector.checkThat(grid, notNullValue());
-        Set<City> cities = grid.getAllCities();
+        Set<City> cities = grid.getCities();
         collector.checkThat(cities.size(), is(5));
         collector.checkThat(cities.contains(A), is(true));
         collector.checkThat(cities.contains(B), is(true));
