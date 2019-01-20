@@ -36,7 +36,7 @@ public class Route implements HasLength, HasStops {
     /**
      * Returns the last added city.
      *
-     * @return the last city or null if the travel path is empty.
+     * @return Optional of the last city.
      */
     public Optional<City> last() {
         return Optional.of(cities.peekLast());

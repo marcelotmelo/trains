@@ -21,14 +21,14 @@ public class GridBuilderTest {
     @Rule
     public final ErrorCollector collector = new ErrorCollector();
 
-    City a = new City("A");
-    City b = new City("B");
-    City c = new City("C");
+    City a = new City(Constants.A);
+    City b = new City(Constants.B);
+    City c = new City(Constants.C);
     City d = new City("D");
     City e = new City("E");
 
     @Test
-    public void buildFromPaths() {
+    public void givenConstantsPathBuild() {
         Grid grid = GridBuilder.buildFromPaths(Constants.PATHS);
         collector.checkThat(grid, notNullValue());
         Set<City> cities = grid.getCities();
@@ -38,7 +38,11 @@ public class GridBuilderTest {
         collector.checkThat(cities.contains(c), is(true));
         collector.checkThat(cities.contains(d), is(true));
         collector.checkThat(cities.contains(e), is(true));
+    }
 
+    @Test
+    public void givenRouteCheckANeighbours() {
+        Grid grid = GridBuilder.buildFromPaths(Constants.PATHS);
         Map<City, Integer> fromA = new HashMap<>();
         fromA.put(b, 5);
         fromA.put(d, 5);
@@ -46,7 +50,11 @@ public class GridBuilderTest {
 
         Map<City, Integer> routesFromA = grid.neighbours(a);
         collector.checkThat(routesFromA, equalTo(fromA));
+    }
 
+    @Test
+    public void givenRouteCheckCNeighbours() {
+        Grid grid = GridBuilder.buildFromPaths(Constants.PATHS);
         Map<City, Integer> fromC = new HashMap<>();
         fromC.put(d, 8);
         fromC.put(e, 2);
@@ -66,14 +74,13 @@ public class GridBuilderTest {
     }
 
     @Test
-    public void citiesFromString() {
+    public void givenStringOfCitiesCheckCreatedList() {
         String abcdef = "ABCDEF";
-        String tclszfgthbnm = "tclszfghbnm";
 
         List<City> abcdefFromString = GridBuilder.citiesFromString(abcdef);
-        City A = new City("A");
-        City B = new City("B");
-        City C = new City("C");
+        City A = new City(Constants.A);
+        City B = new City(Constants.B);
+        City C = new City(Constants.C);
         City D = new City("D");
         City E = new City("E");
         City F = new City("F");
@@ -84,8 +91,13 @@ public class GridBuilderTest {
         collector.checkThat(abcdefFromString.contains(D), is(true));
         collector.checkThat(abcdefFromString.contains(E), is(true));
         collector.checkThat(abcdefFromString.contains(F), is(true));
+    }
 
+    @Test
+    public void givenStringOfCitiesLowerCaseCheckCreatedList() {
+        String tclszfgthbnm = "tclszfghbnm";
         List<City> tclszFromString = GridBuilder.citiesFromString(tclszfgthbnm);
+
         City t = new City("t");
         City c = new City("c");
         City l = new City("l");
@@ -110,4 +122,5 @@ public class GridBuilderTest {
         collector.checkThat(tclszFromString.contains(n), is(true));
         collector.checkThat(tclszFromString.contains(m), is(true));
     }
+
 }

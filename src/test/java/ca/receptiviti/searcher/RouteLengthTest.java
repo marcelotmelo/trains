@@ -22,22 +22,22 @@ public class RouteLengthTest {
 
     @Test
     public void givenSourceADestinationCShortest() throws Exception {
-        City a = new City("A");
-        City c = new City("C");
+        City a = new City(Constants.A);
+        City c = new City(Constants.C);
         int expected = 9;
         assertShortest(expected, a, c);
     }
 
     @Test
     public void givenSourceBDestinationBShortest() throws Exception {
-        City b = new City("B");
+        City b = new City(Constants.B);
         int expected = 9;
         assertShortest(expected, b, b);
     }
 
     @Test
     public void givenSourceCDestinationCMaxLength() throws Exception {
-        City c = new City("C");
+        City c = new City(Constants.C);
         int expected = 7;
 
         int trips = routeLength.tripsWithMaxLength(c, c, 30);
