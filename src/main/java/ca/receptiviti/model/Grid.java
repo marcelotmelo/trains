@@ -1,5 +1,7 @@
 package ca.receptiviti.model;
 
+import ca.receptiviti.exception.RouteNotFoundException;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -53,16 +55,33 @@ public class Grid {
     /**
      * Returns all the cities directly accessible from a given city.
      *
-     * @param city The origin city.
+     * @param city The source city.
      * @return A list of cities accessible from the origin.
      */
     public Set<City> getNeighbours(City city) {
         Set<City> neighbours = new HashSet<>();
-        Map<City, Integer> routes = cities.get(city);
+        Map<City, Integer> routes = routesFromCity(city);
         if (routes != null) {
             neighbours.addAll(routes.keySet());
         }
         return neighbours;
+    }
+
+    /**
+     * Returns the distance between two directly connected cities (destination is a immediate neighbour of source).
+     *
+     * @param source The source City.
+     * @param destination The destination City.
+     * @return The distance.
+     * @throws RouteNotFoundException If cities are not directly connected or do not exist.
+     */
+    public int getDistance(City source, City destination) throws RouteNotFoundException {
+        Map<City, Integer> routes = routesFromCity(source);
+        Integer distance = routes.get(destination);
+        if (distance == null) {
+            throw new RouteNotFoundException();
+        }
+        return distance;
     }
 
 }

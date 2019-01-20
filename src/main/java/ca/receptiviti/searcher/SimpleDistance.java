@@ -5,7 +5,6 @@ import ca.receptiviti.model.City;
 import ca.receptiviti.model.Grid;
 
 import java.util.List;
-import java.util.Map;
 
 class SimpleDistance {
 
@@ -20,16 +19,7 @@ class SimpleDistance {
         for (int i = 0; i < cities.size() - 1; i++) {
             City origin = cities.get(i);
             City destination = cities.get(i + 1);
-            distance += getDistance(origin, destination);
-        }
-        return distance;
-    }
-
-    private int getDistance(City origin, City destination) throws RouteNotFoundException {
-        Map<City, Integer> routesFromCity = grid.routesFromCity(origin);
-        Integer distance = routesFromCity.get(destination);
-        if (distance == null) {
-            throw new RouteNotFoundException();
+            distance += grid.getDistance(origin, destination);
         }
         return distance;
     }

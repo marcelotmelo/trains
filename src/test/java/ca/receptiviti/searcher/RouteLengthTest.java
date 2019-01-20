@@ -24,19 +24,15 @@ public class RouteLengthTest {
     public void givenSourceADestinationCShortestExpect9() {
         City a = new City("A");
         City c = new City("C");
-        int expectedLength = 9;
-
-        int length = routeLength.shortest(a, c);
-        assertThat(length, equalTo(expectedLength));
+        int expected = 9;
+        assertShortest(expected, a, c);
     }
 
     @Test
     public void givenSourceBDestinationBShortestExpect9() {
         City b = new City("B");
-        int expectedLength = 9;
-
-        int length = routeLength.shortest(b, b);
-        assertThat(length, equalTo(expectedLength));
+        int expected = 9;
+        assertShortest(expected, b, b);
     }
 
     @Test
@@ -46,6 +42,12 @@ public class RouteLengthTest {
 
         int trips = routeLength.tripsWithMaxLength(c, c, 30);
         assertThat(trips, equalTo(expected));
+    }
+
+    private void assertShortest(int expected, City source, City destination) {
+        int length = routeLength.shortest(source, destination);
+        assertThat(length, equalTo(expected));
+
     }
 
 }

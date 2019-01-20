@@ -2,11 +2,12 @@ package ca.receptiviti.searcher;
 
 import ca.receptiviti.model.City;
 import ca.receptiviti.model.Grid;
+import ca.receptiviti.model.Route;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.function.BooleanSupplier;
 
 public class NumberOfTrips {
 
@@ -17,35 +18,36 @@ public class NumberOfTrips {
     }
 
     public int maxStops(City source, City destination, int stops) {
-        List<List<City>> allPaths = new ArrayList<>();
+        List<Route> routes = new ArrayList<>();
+        Route route = new Route(source);
+        walk(destination, route, routes, stops, true, () -> true);
 
-        List<City> currentPath = new ArrayList<>(Arrays.asList(source));
-        walk(destination, currentPath, allPaths, stops);
-
-        return allPaths.stream().filter(list -> list.size()-1 <= stops).collect(Collectors.toList()).size();
+        return (int) routes.stream().filter(r -> r.stops() <= stops).count();
     }
 
     public int exactStops(City source, City destination, int stops) {
-        List<List<City>> allPaths = new ArrayList<>();
+        List<Route> routes = new ArrayList<>();
+        Route route = new Route(source);
+        walk(destination, route, routes, stops, true, () -> true);
 
-        List<City> currentPath = new ArrayList<>(Arrays.asList(source));
-        walk(destination, currentPath, allPaths, stops);
-
-        return allPaths.stream().filter(list -> list.size()-1 == stops).collect(Collectors.toList()).size();
+        return (int) routes.stream().filter(r -> r.stops() == stops).count();
     }
 
-    private void walk(City destination, List<City> path, List<List<City>> allPaths, int stops) {
-        City city = path.get(path.size() - 1);
-        for (City neighbour : grid.getNeighbours(city)) {
+    private void walk(City destination, Route route, List<Route> routes, int stops, boolean canCycle, BooleanSupplier booleanSupplier) {
+        City city = route.last();
+        for (Map.Entry<City, Integer> entry : grid.routesFromCity(city).entrySet()) {
+            City neighbour = entry.getKey();
+            Integer distance = entry.getValue();
             if (destination.equals(neighbour)) {
-                List<City> currentPath = new ArrayList<>(path);
-                currentPath.add(neighbour);
-                allPaths.add(currentPath);
+                routes.add(Route.builder().wihtRoute(route).addRoute(neighbour, distance).build());
             }
-            if (path.size() <= stops) {
-                List<City> currentPath = new ArrayList<>(path);
-                currentPath.add(neighbour);
-                walk(destination, currentPath, allPaths, stops);
+            if (booleanSupplier.getAsBoolean()) {
+                if (canCycle || !route.contains(neighbour)) {
+                    if (route.stops() <= stops) {
+                        Route current = Route.builder().wihtRoute(route).addRoute(neighbour, distance).build();
+                        walk(destination, current, routes, stops, canCycle, booleanSupplier);
+                    }
+                }
             }
         }
     }

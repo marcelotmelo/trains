@@ -2,11 +2,10 @@ package ca.receptiviti.searcher;
 
 import ca.receptiviti.model.City;
 import ca.receptiviti.model.Grid;
+import ca.receptiviti.model.Route;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
@@ -20,41 +19,35 @@ public class RouteLength {
     }
 
     public int shortest(City source, City destination) {
+        List<Route> routes = new ArrayList<>();
+        Route route = new Route(source);
 
-        Map<Integer, List<City>> pathLengths = new HashMap<>();
-        List<City> path = new ArrayList<>(Arrays.asList(source));
+        walk(destination, route, routes, false, () -> true);
 
-        walk(destination, path, pathLengths, 0, false, () -> true);
-
-        return pathLengths.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey)).findFirst().get().getKey();
+        return routes.stream().sorted(Comparator.comparing(Route::length)).findFirst().get().length();
     }
 
     public int tripsWithMaxLength(City source, City destination, int maxLength) {
-        Map<Integer, List<City>> pathLengths = new HashMap<>();
-        List<City> path = new ArrayList<>(Arrays.asList(source));
+        List<Route> routes = new ArrayList<>();
+        Route route = new Route(source);
 
-        int distance = 0;
-        walk(destination, path, pathLengths, distance, true, () -> distance <= 30);
+        walk(destination, route, routes, true, () -> route.length() < 30);
 
-        return (int) pathLengths.keySet().stream().filter(length -> length <= 30).count();
+        return (int) routes.stream().filter(r -> r.length() < 30).count();
     }
 
-    public void walk(City destination, List<City> path, Map<Integer, List<City>> pathLengths, int distance, boolean canCycle, BooleanSupplier booleanSupplier) {
-        City city = path.get(path.size() - 1);
-        for (Map.Entry<City, Integer> route : grid.routesFromCity(city).entrySet()) {
-            City neighbour = route.getKey();
-            Integer edge = route.getValue();
+    public void walk(City destination, Route route, List<Route> routes, boolean canCycle, BooleanSupplier booleanSupplier) {
+        City city = route.last();
+        for (Map.Entry<City, Integer> fromCity : grid.routesFromCity(city).entrySet()) {
+            City neighbour = fromCity.getKey();
+            Integer distance = fromCity.getValue();
             if (destination.equals(neighbour)) {
-                List<City> currentPath = new ArrayList<>(path);
-                currentPath.add(neighbour);
-                pathLengths.put(distance + edge, currentPath);
+                routes.add(Route.builder().wihtRoute(route).addRoute(neighbour, distance).build());
             }
             if (booleanSupplier.getAsBoolean()) {
-                if(canCycle || !path.contains(neighbour)) {
-                    List<City> currentPath = new ArrayList<>(path);
-                    currentPath.add(neighbour);
-                    int currentDistance = distance + edge;
-                    walk(destination, currentPath, pathLengths, currentDistance, canCycle, () -> currentDistance <= 30);
+                if (canCycle || !route.contains(neighbour)) {
+                    Route current = Route.builder().wihtRoute(route).addRoute(neighbour, distance).build();
+                    walk(destination, current, routes, canCycle, () -> route.length() < 30);
                 }
             }
         }
